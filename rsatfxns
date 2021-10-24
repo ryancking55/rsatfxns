@@ -1,0 +1,52 @@
+###
+### Signal Detection Measures
+###
+
+dprime<-function(hit,fa,correction=0.05) { 
+  for(i in 1:length(hit)){
+    if(hit[i]>=(1-correction)){hit[i]<-1-correction}
+    if(hit[i]<=(correction)){hit[i]<-correction}
+    if(fa[i]<=(correction)){fa[i]<-correction}
+    if(fa[i]>=(1-correction)){fa[i]<-1-correction}
+    
+  }
+  return(qnorm(hit) - qnorm(fa)); 
+}
+
+
+fa.dprime<-function(hit,fa,correction=0.05) { 
+  for(i in 1:length(hit)){
+    if(hit[i]<=(correction)){hit[i]<-correction}
+    if(fa[i]<=correction){fa[i]<-correction}
+  }
+  return(qnorm(hit) - qnorm(fa)); 
+}
+
+
+
+misses.dprime<-function(hit,fa,correction=0.05) { 
+  for(i in 1:length(hit)){
+    if(hit[i]<=(correction)){hit[i]<-correction}
+    if(fa[i]<=correction){fa[i]<-correction}
+  }
+  return(qnorm(hit) - qnorm(fa)); 
+}
+
+
+
+### Speed Accuracy Trade-off Curve (shifted exponential)
+
+satcurve<-function(lambda,beta,delta){
+  
+  
+  
+  t<-1:6000/1000;
+  
+  
+  d<-lambda*(1-exp(-beta*(t-delta)))
+  
+  d[t<delta]<-0;
+  return(d)
+  
+  
+}
